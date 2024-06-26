@@ -1,0 +1,30 @@
+name: to_do_list
+description: "To-Do List App"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.4.3 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.6
+
+  # local database
+  floor: ^1.5.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.0
+
+  # code generator
+  build_runner: ^2.4.11
+  floor_generator: ^1.5.0
+
+flutter:
+  uses-material-design: true
