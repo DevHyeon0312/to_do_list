@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do_list/app/feature/task/controller/task_controller.dart';
+import 'package:to_do_list/app/feature/task/widget/simple_add_task_widget.dart';
 import 'package:to_do_list/common/widget/animation_floating_action_button.dart';
 
 class TaskAllListPage extends StatefulWidget {
@@ -53,7 +54,22 @@ class _TaskAllListPageState extends State<TaskAllListPage> {
           }
       ),
       floatingActionButton: AnimationFloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            isDismissible: false,
+            backgroundColor: Colors.white,
+            builder: (BuildContext context) {
+              return SimpleAddTaskWidget(
+                onSubmit: (title, category, dueDate) {
+                  //TODO : Add Task
+                  FocusScope.of(context).unfocus();
+                },
+              );
+            },
+          );
+        },
       ),
     );
   }

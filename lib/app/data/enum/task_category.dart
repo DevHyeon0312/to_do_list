@@ -15,7 +15,7 @@ enum TaskCategory {
   String get name {
     switch (this) {
       case TaskCategory.none:
-        return '없음';
+        return '카테고리 없음';
       case TaskCategory.personal:
         return '개인';
       case TaskCategory.work:

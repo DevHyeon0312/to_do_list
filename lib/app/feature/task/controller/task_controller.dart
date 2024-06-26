@@ -2,8 +2,12 @@ import 'package:get/get.dart';
 import 'package:to_do_list/app/data/enum/task_category.dart';
 import 'package:to_do_list/app/data/enum/task_status.dart';
 import 'package:to_do_list/app/data/model/task.dart';
+import 'package:to_do_list/app/data/usecase/task_usecase.dart';
 
 class TaskController extends GetxController {
+  // UseCase
+  final TaskUseCase taskUseCase = TaskUseCase();
+
   var taskList = <Task>[].obs;
 
   //TODO : 전체 할일 조회
