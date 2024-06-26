@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:to_do_list/feature/main/controller/main_tab_controller.dart';
+import 'package:to_do_list/app/feature/main/controller/main_tab_controller.dart';
+import 'package:to_do_list/app/feature/task/page/task_all_list_page.dart';
+import 'package:to_do_list/app/feature/task/page/task_complete_list_page.dart';
+import 'package:to_do_list/app/feature/task/page/task_ongoing_list_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -12,19 +15,10 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   final MainTabController tabController = Get.put(MainTabController());
 
-  final List<Widget> pages = [
-    Container(
-      child: ListView.builder(
-        itemCount: 100,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text('Item $index'),
-          );
-        },
-      ),
-    ),
-    Container(),
-    Container(),
+  final List<Widget> pages = const [
+    TaskAllListPage(),
+    TaskOngoingListPage(),
+    TaskCompleteListPage(),
   ];
 
   @override
