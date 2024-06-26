@@ -13,6 +13,9 @@ dependencies:
 
   cupertino_icons: ^1.0.6
 
+  # state management
+  get: ^4.6.6
+
   # local database
   floor: ^1.5.0
 
