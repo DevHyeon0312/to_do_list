@@ -1,8 +1,17 @@
 import 'package:to_do_list/app/data/model/task.dart';
 import 'package:to_do_list/common/util/debug_log.dart';
-import 'package:to_do_list/core/local_db/database_module.dart';
 import 'package:to_do_list/core/local_db/repository/database_task_repository.dart';
 
+/// DataBase 를 통해서 앱에서 사용할 로직을 정의한 클래스
+/// * [taskRepository] Task DataBase Repository
+/// * [getAllTasks] 전체 할일 조회
+/// * [getPendingTaskList] 할일 리스트 조회하기
+/// * [getOngoingTaskList] 진행중인 리스트 조회하기
+/// * [getCompletedTaskList] 완료된 리스트 조회하기
+/// * [addTask] 할일 등록
+/// * [deleteTask] 할일 제거
+/// * [updateTask] 할일 수정
+///
 class TaskUseCase {
   // Task DataBase Repository
   final Future<DatabaseTaskRepository> taskRepository;
@@ -110,21 +119,6 @@ class TaskUseCase {
       });
     } catch (e) {
       throw Exception('할일 수정에 실패했습니다.');
-    }
-  }
-
-  // 할일 여러개 제거
-  Future<void> deleteTasksFromIndex(int index) async {
-    final repository = await taskRepository;
-    try {
-      await repository.deleteTasksFromIndex(index).then((value) {
-        DebugLog.d('할일 삭제에 성공했습니다.');
-        return value;
-      }).onError((error, stackTrace) {
-        throw Exception('할일 삭제에 실패했습니다.');
-      });
-    } catch (e) {
-      throw Exception('할일 삭제에 실패했습니다.');
     }
   }
 }

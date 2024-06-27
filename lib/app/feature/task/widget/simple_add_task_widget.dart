@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:to_do_list/app/data/enum/task_category.dart';
 import 'package:to_do_list/common/widget/single_text_field.dart';
 
+/// 할일 추가 위젯
+/// * 할일 추가를 위한 간단한 입력 폼을 제공하는 위젯
 class SimpleAddTaskWidget extends StatefulWidget {
   const SimpleAddTaskWidget({super.key, required this.onSubmit});
 

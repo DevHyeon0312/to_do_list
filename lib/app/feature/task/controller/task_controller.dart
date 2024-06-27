@@ -5,6 +5,22 @@ import 'package:to_do_list/app/data/enum/task_status.dart';
 import 'package:to_do_list/app/data/model/task.dart';
 import 'package:to_do_list/app/data/usecase/task_usecase.dart';
 
+/// [TaskController] Task 에 관련해서 공통적으로 공유되어야 하는 데이터와 로직을 정의한 클래스
+/// * [taskUseCase] TaskUseCase
+/// * [pendingTaskList] 대기중인 할일 리스트
+/// * [ongoingTaskList] 진행중인 할일 리스트
+/// * [completedTaskList] 완료된 할일 리스트
+/// * [createNewTask] 할일 등록
+/// * [getTaskList] 할일 리스트 조회하기
+/// * [insertTask] 할일 리스트에 할일 추가하기
+/// * [deleteTask] 할일 리스트에서 할일 제거하기
+/// * [updateTask] 할일 수정하기
+/// * [updateTaskStatus] 할일 상태 변경하기
+/// * [changeTaskPosition] 할일 순서 변경하기
+/// * [getPendingTaskList] 대기중인 할일 리스트 조회하기
+/// * [getOngoingTaskList] 진행중인 할일 리스트 조회하기
+/// * [getCompleteTaskList] 완료된 할일 리스트 조회하기
+///
 class TaskController extends GetxController {
   final TaskUseCase taskUseCase;
 

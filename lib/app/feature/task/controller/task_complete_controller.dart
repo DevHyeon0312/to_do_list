@@ -4,6 +4,7 @@ import 'package:to_do_list/app/data/model/task.dart';
 import 'package:to_do_list/app/feature/task/controller/task_controller.dart';
 import 'package:to_do_list/common/util/debug_log.dart';
 
+/// [TaskCompleteController] : 완료한 할일을 관리하는 컨트롤러
 class TaskCompleteController extends GetxController {
   final TaskController _taskController = Get.find<TaskController>();
 

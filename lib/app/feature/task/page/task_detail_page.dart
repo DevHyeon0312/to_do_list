@@ -5,6 +5,8 @@ import 'package:to_do_list/app/data/enum/task_status.dart';
 import 'package:to_do_list/app/feature/task/controller/task_detail_controller.dart';
 import 'package:to_do_list/common/util/date_util.dart';
 
+/// [TaskDetailPage] 할일 상세 화면
+/// * 할일 정보를 수정하고 저장할 수 있는 화면
 class TaskDetailPage extends StatefulWidget {
   const TaskDetailPage({super.key});
 

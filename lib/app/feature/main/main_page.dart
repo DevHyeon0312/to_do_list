@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do_list/app/feature/main/controller/main_tab_controller.dart';
-import 'package:to_do_list/app/feature/task/controller/task_ongoing_controller.dart';
-import 'package:to_do_list/app/feature/task/controller/task_pending_controller.dart';
-import 'package:to_do_list/app/feature/task/page/task_pending_list_page.dart';
 import 'package:to_do_list/app/feature/task/page/task_complete_list_page.dart';
 import 'package:to_do_list/app/feature/task/page/task_ongoing_list_page.dart';
+import 'package:to_do_list/app/feature/task/page/task_pending_list_page.dart';
 
+///
+/// [MainPage] main page
+/// * [TaskPendingPage] 할일 페이지
+/// * [TaskOngoingListPage] 진행중 페이지
+/// * [TaskCompleteListPage] 완료 페이지
+///
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
 

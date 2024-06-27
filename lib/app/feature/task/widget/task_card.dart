@@ -3,6 +3,8 @@ import 'package:to_do_list/app/data/enum/task_status.dart';
 import 'package:to_do_list/app/data/model/task.dart';
 import 'package:to_do_list/common/util/date_util.dart';
 
+/// [TaskCard] 할일 카드 위젯
+/// * 할일 정보를 보여주는 카드 위젯
 class TaskCard extends StatefulWidget {
   final Task task;
   final int position;

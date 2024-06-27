@@ -6,6 +6,8 @@ import 'package:to_do_list/app/feature/task/widget/task_card.dart';
 import 'package:to_do_list/app/navigation/app_route.dart';
 import 'package:to_do_list/common/widget/animation_floating_action_button.dart';
 
+/// [TaskPendingPage] 대기중인 페이지 : [MainPage]에서 대기중인 탭을 눌렀을 때 보여지는 페이지
+/// * [TaskCard] 할일 카드 위젯
 class TaskPendingPage extends StatefulWidget {
   const TaskPendingPage({super.key});
 

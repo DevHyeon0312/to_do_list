@@ -5,6 +5,7 @@ import 'package:to_do_list/app/data/model/task.dart';
 import 'package:to_do_list/app/feature/task/controller/task_controller.dart';
 import 'package:to_do_list/common/util/debug_log.dart';
 
+/// [TaskPendingController] : 대기중인 할일을 관리하는 컨트롤러
 class TaskPendingController extends GetxController {
   final TaskController _taskController = Get.find<TaskController>();
 

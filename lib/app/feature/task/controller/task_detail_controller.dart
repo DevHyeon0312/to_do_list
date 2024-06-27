@@ -4,6 +4,11 @@ import 'package:to_do_list/app/data/enum/task_status.dart';
 import 'package:to_do_list/app/data/model/task.dart';
 import 'package:to_do_list/app/feature/task/controller/task_controller.dart';
 
+///
+/// [TaskDetailController] 할일을 수정하는 화면의 Controller
+/// * [setTask] 할일 정보를 설정
+/// * [updateTask] 할일을 수정
+///
 class TaskDetailController extends GetxController {
   final TaskController _taskController = Get.find<TaskController>();
 

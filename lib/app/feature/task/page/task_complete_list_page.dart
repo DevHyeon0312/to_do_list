@@ -4,6 +4,8 @@ import 'package:to_do_list/app/feature/task/controller/task_complete_controller.
 import 'package:to_do_list/app/feature/task/widget/task_card.dart';
 import 'package:to_do_list/app/navigation/app_route.dart';
 
+/// [TaskCompleteListPage] 완료 페이지 : [MainPage]에서 완료 탭을 눌렀을 때 보여지는 페이지
+/// * [TaskCard] 할일 카드 위젯
 class TaskCompleteListPage extends StatefulWidget {
   const TaskCompleteListPage({super.key});
 
