@@ -11,6 +11,9 @@ class DatabaseTaskRepositoryImpl extends DatabaseTaskRepository {
   Future<void> deleteTask(DbTaskEntity task) => taskDatabase.taskDao.deleteTask(task);
 
   @override
+  Future<void> deleteTasksFromIndex(int index) => taskDatabase.taskDao.deleteTasksFromIndex(index);
+
+  @override
   Future<List<DbTaskEntity>> findAllTasks() => taskDatabase.taskDao.findAllTasks();
 
   @override
@@ -20,23 +23,26 @@ class DatabaseTaskRepositoryImpl extends DatabaseTaskRepository {
   Future<List<DbTaskEntity>> findOngoingTasks() => taskDatabase.taskDao.findOngoingTasks();
 
   @override
+  Future<List<DbTaskEntity>> findPendingTasks() => taskDatabase.taskDao.findPendingTasks();
+
+  @override
   Future<DbTaskEntity?> findTaskById(int id) => taskDatabase.taskDao.findTaskById(id);
 
   @override
-  Future<void> insertTask(DbTaskEntity task) => taskDatabase.taskDao.insertTask(task);
+  Future<int> insertTask(DbTaskEntity task) => taskDatabase.taskDao.insertTask(task);
+
+  @override
+  Future<List<int>> insertTasks(List<DbTaskEntity> tasks) => taskDatabase.taskDao.insertTasks(tasks);
 
   @override
   Future<void> updateTask(DbTaskEntity task) => taskDatabase.taskDao.updateTask(task);
 
   @override
-  Future<void> updateTaskOrder(int oldId, int newId) => taskDatabase.taskDao.updateTaskOrder(oldId, newId);
-
-  @override
   Future<void> updateTaskToCompleted(int id) => taskDatabase.taskDao.updateTaskToCompleted(id);
 
   @override
-  Future<void> updateTaskToInitial(int id) => taskDatabase.taskDao.updateTaskToInitial(id);
+  Future<void> updateTaskToOngoing(int id) => taskDatabase.taskDao.updateTaskToOngoing(id);
 
   @override
-  Future<void> updateTaskToOngoing(int id) => taskDatabase.taskDao.updateTaskToOngoing(id);
+  Future<void> updateTaskToPending(int id) => taskDatabase.taskDao.updateTaskToPending(id);
 }

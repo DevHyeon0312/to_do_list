@@ -96,7 +96,7 @@ class _$TaskDatabase extends TaskDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `task_table` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `content` TEXT NOT NULL, `category` TEXT NOT NULL, `dueDateMilliSeconds` INTEGER NOT NULL, `link` TEXT NOT NULL, `isOnGoing` INTEGER NOT NULL, `isCompleted` INTEGER NOT NULL, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `task_table` (`id` INTEGER NOT NULL, `sortId` INTEGER NOT NULL, `title` TEXT NOT NULL, `content` TEXT NOT NULL, `category` TEXT NOT NULL, `dueDateMilliSeconds` INTEGER, `link` TEXT NOT NULL, `isOnGoing` INTEGER NOT NULL, `isCompleted` INTEGER NOT NULL, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -120,6 +120,7 @@ class _$DbTaskDao extends DbTaskDao {
             'task_table',
             (DbTaskEntity item) => <String, Object?>{
                   'id': item.id,
+                  'sortId': item.sortId,
                   'title': item.title,
                   'content': item.content,
                   'category': item.category,
@@ -134,6 +135,7 @@ class _$DbTaskDao extends DbTaskDao {
             ['id'],
             (DbTaskEntity item) => <String, Object?>{
                   'id': item.id,
+                  'sortId': item.sortId,
                   'title': item.title,
                   'content': item.content,
                   'category': item.category,
@@ -148,6 +150,7 @@ class _$DbTaskDao extends DbTaskDao {
             ['id'],
             (DbTaskEntity item) => <String, Object?>{
                   'id': item.id,
+                  'sortId': item.sortId,
                   'title': item.title,
                   'content': item.content,
                   'category': item.category,
@@ -170,14 +173,38 @@ class _$DbTaskDao extends DbTaskDao {
   final DeletionAdapter<DbTaskEntity> _dbTaskEntityDeletionAdapter;
 
   @override
+  Future<void> deleteTasksFromIndex(int index) async {
+    await _queryAdapter.queryNoReturn('DELETE FROM task_table WHERE id >= ?1',
+        arguments: [index]);
+  }
+
+  @override
   Future<List<DbTaskEntity>> findAllTasks() async {
-    return _queryAdapter.queryList('SELECT * FROM task_table ORDER BY id DESC',
+    return _queryAdapter.queryList(
+        'SELECT * FROM task_table order by sortId ASC',
         mapper: (Map<String, Object?> row) => DbTaskEntity(
             id: row['id'] as int,
+            sortId: row['sortId'] as int,
             title: row['title'] as String,
             content: row['content'] as String,
             category: row['category'] as String,
-            dueDateMilliSeconds: row['dueDateMilliSeconds'] as int,
+            dueDateMilliSeconds: row['dueDateMilliSeconds'] as int?,
+            link: row['link'] as String,
+            isOnGoing: (row['isOnGoing'] as int) != 0,
+            isCompleted: (row['isCompleted'] as int) != 0));
+  }
+
+  @override
+  Future<List<DbTaskEntity>> findPendingTasks() async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM task_table WHERE isOnGoing = 0 AND isCompleted = 0 ORDER BY sortId ASC',
+        mapper: (Map<String, Object?> row) => DbTaskEntity(
+            id: row['id'] as int,
+            sortId: row['sortId'] as int,
+            title: row['title'] as String,
+            content: row['content'] as String,
+            category: row['category'] as String,
+            dueDateMilliSeconds: row['dueDateMilliSeconds'] as int?,
             link: row['link'] as String,
             isOnGoing: (row['isOnGoing'] as int) != 0,
             isCompleted: (row['isCompleted'] as int) != 0));
@@ -186,13 +213,14 @@ class _$DbTaskDao extends DbTaskDao {
   @override
   Future<List<DbTaskEntity>> findOngoingTasks() async {
     return _queryAdapter.queryList(
-        'SELECT * FROM task_table WHERE isOnGoing = 1 ORDER BY id DESC',
+        'SELECT * FROM task_table WHERE isOnGoing = 1 AND isCompleted = 0 ORDER BY sortId ASC',
         mapper: (Map<String, Object?> row) => DbTaskEntity(
             id: row['id'] as int,
+            sortId: row['sortId'] as int,
             title: row['title'] as String,
             content: row['content'] as String,
             category: row['category'] as String,
-            dueDateMilliSeconds: row['dueDateMilliSeconds'] as int,
+            dueDateMilliSeconds: row['dueDateMilliSeconds'] as int?,
             link: row['link'] as String,
             isOnGoing: (row['isOnGoing'] as int) != 0,
             isCompleted: (row['isCompleted'] as int) != 0));
@@ -201,13 +229,14 @@ class _$DbTaskDao extends DbTaskDao {
   @override
   Future<List<DbTaskEntity>> findCompletedTasks() async {
     return _queryAdapter.queryList(
-        'SELECT * FROM task_table WHERE isCompleted = 1 ORDER BY id DESC',
+        'SELECT * FROM task_table WHERE isCompleted = 1 ORDER BY sortId ASC',
         mapper: (Map<String, Object?> row) => DbTaskEntity(
             id: row['id'] as int,
+            sortId: row['sortId'] as int,
             title: row['title'] as String,
             content: row['content'] as String,
             category: row['category'] as String,
-            dueDateMilliSeconds: row['dueDateMilliSeconds'] as int,
+            dueDateMilliSeconds: row['dueDateMilliSeconds'] as int?,
             link: row['link'] as String,
             isOnGoing: (row['isOnGoing'] as int) != 0,
             isCompleted: (row['isCompleted'] as int) != 0));
@@ -218,10 +247,11 @@ class _$DbTaskDao extends DbTaskDao {
     return _queryAdapter.query('SELECT * FROM task_table WHERE id = ?1',
         mapper: (Map<String, Object?> row) => DbTaskEntity(
             id: row['id'] as int,
+            sortId: row['sortId'] as int,
             title: row['title'] as String,
             content: row['content'] as String,
             category: row['category'] as String,
-            dueDateMilliSeconds: row['dueDateMilliSeconds'] as int,
+            dueDateMilliSeconds: row['dueDateMilliSeconds'] as int?,
             link: row['link'] as String,
             isOnGoing: (row['isOnGoing'] as int) != 0,
             isCompleted: (row['isCompleted'] as int) != 0),
@@ -229,7 +259,7 @@ class _$DbTaskDao extends DbTaskDao {
   }
 
   @override
-  Future<void> updateTaskToInitial(int id) async {
+  Future<void> updateTaskToPending(int id) async {
     await _queryAdapter.queryNoReturn(
         'UPDATE task_table SET isOnGoing = 0, isCompleted = 0 WHERE id = ?1',
         arguments: [id]);
@@ -250,18 +280,15 @@ class _$DbTaskDao extends DbTaskDao {
   }
 
   @override
-  Future<void> updateTaskOrder(
-    int oldId,
-    int newId,
-  ) async {
-    await _queryAdapter.queryNoReturn(
-        'UPDATE task_table SET id = ?2 WHERE id = ?1',
-        arguments: [oldId, newId]);
+  Future<int> insertTask(DbTaskEntity task) {
+    return _dbTaskEntityInsertionAdapter.insertAndReturnId(
+        task, OnConflictStrategy.abort);
   }
 
   @override
-  Future<void> insertTask(DbTaskEntity task) async {
-    await _dbTaskEntityInsertionAdapter.insert(task, OnConflictStrategy.abort);
+  Future<List<int>> insertTasks(List<DbTaskEntity> tasks) {
+    return _dbTaskEntityInsertionAdapter.insertListAndReturnIds(
+        tasks, OnConflictStrategy.abort);
   }
 
   @override

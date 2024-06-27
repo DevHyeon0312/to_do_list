@@ -7,7 +7,10 @@ class DateUtil {
   }
 
   // milliseconds to DateTime
-  static DateTime milliSecondsToDateTime(int milliSeconds) {
+  static DateTime? milliSecondsToDateTime(int? milliSeconds) {
+    if (milliSeconds == null) {
+      return null;
+    }
     return DateTime.fromMillisecondsSinceEpoch(milliSeconds);
   }
 

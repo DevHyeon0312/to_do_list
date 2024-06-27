@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:to_do_list/app/navigation/app_binding.dart';
 import 'package:to_do_list/app/navigation/app_page.dart';
 import 'package:to_do_list/app/navigation/app_route.dart';
 
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: AppRoute.main.name,
       getPages: AppPage.pages,
+      initialBinding: AppBinding(),
     );
   }
 }

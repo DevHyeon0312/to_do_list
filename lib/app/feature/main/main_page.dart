@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do_list/app/feature/main/controller/main_tab_controller.dart';
-import 'package:to_do_list/app/feature/task/page/task_all_list_page.dart';
+import 'package:to_do_list/app/feature/task/controller/task_ongoing_controller.dart';
+import 'package:to_do_list/app/feature/task/controller/task_pending_controller.dart';
+import 'package:to_do_list/app/feature/task/page/task_pending_list_page.dart';
 import 'package:to_do_list/app/feature/task/page/task_complete_list_page.dart';
 import 'package:to_do_list/app/feature/task/page/task_ongoing_list_page.dart';
 
@@ -16,7 +18,7 @@ class _MainPageState extends State<MainPage> {
   final MainTabController tabController = Get.put(MainTabController());
 
   final List<Widget> pages = const [
-    TaskAllListPage(),
+    TaskPendingPage(),
     TaskOngoingListPage(),
     TaskCompleteListPage(),
   ];

@@ -1,29 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:to_do_list/app/feature/task/controller/task_controller.dart';
 import 'package:to_do_list/app/feature/task/controller/task_ongoing_controller.dart';
+import 'package:to_do_list/app/feature/task/controller/task_pending_controller.dart';
+import 'package:to_do_list/app/feature/task/widget/simple_add_task_widget.dart';
+import 'package:to_do_list/common/widget/animation_floating_action_button.dart';
 
-class TaskOngoingListPage extends StatefulWidget {
-  const TaskOngoingListPage({super.key});
+class TaskPendingPage extends StatefulWidget {
+  const TaskPendingPage({super.key});
 
   @override
-  State<TaskOngoingListPage> createState() => _TaskOngoingListPageState();
+  State<TaskPendingPage> createState() => _TaskPendingPageState();
 }
 
-class _TaskOngoingListPageState extends State<TaskOngoingListPage> {
-  final taskOngoingController = Get.put(TaskOngoingController());
+class _TaskPendingPageState extends State<TaskPendingPage> {
+  final pendingTaskController = Get.put(TaskPendingController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('진행중'),
+        title: const Text('할일'),
       ),
       backgroundColor: Colors.white,
       body: Stack(
         children: [
           // loading widget
           Obx(() {
-            var loading = taskOngoingController.isLoading;
+            var loading = pendingTaskController.isLoading;
             if (loading.value) {
               return const Center(
                 child: CircularProgressIndicator(),
@@ -34,10 +38,10 @@ class _TaskOngoingListPageState extends State<TaskOngoingListPage> {
           }),
           // list widget
           Obx(() {
-            final pendingTaskList = taskOngoingController.ongoingTaskList;
+            final pendingTaskList = pendingTaskController.pendingTaskList;
             return ReorderableListView.builder(
               onReorder: (int oldIndex, int newIndex) {
-                taskOngoingController.changeTaskPosition(oldIndex, newIndex);
+                pendingTaskController.changeTaskPosition(oldIndex, newIndex);
               },
               itemCount: pendingTaskList.length,
               itemBuilder: (context, index) {
@@ -58,16 +62,16 @@ class _TaskOngoingListPageState extends State<TaskOngoingListPage> {
                   ),
                   onDismissed: (direction) {
                     if (direction == DismissDirection.startToEnd) {
-                      taskOngoingController.completeTask(item);
+                      pendingTaskController.startTask(item);
                     } else if (direction == DismissDirection.endToStart) {
-                      taskOngoingController.deleteTask(item);
+                      pendingTaskController.deleteTask(item);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: const Text('할일이 삭제되었습니다.'),
                           action: SnackBarAction(
                             label: '취소',
                             onPressed: () {
-                              taskOngoingController.insertTask(item, index);
+                              pendingTaskController.insertTask(item, index);
                             },
                           ),
                         ),
@@ -90,6 +94,24 @@ class _TaskOngoingListPageState extends State<TaskOngoingListPage> {
             );
           }),
         ],
+      ),
+      floatingActionButton: AnimationFloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            isDismissible: false,
+            backgroundColor: Colors.white,
+            builder: (BuildContext context) {
+              return SimpleAddTaskWidget(
+                onSubmit: (title, category, dueDate) {
+                  FocusScope.of(context).unfocus();
+                  pendingTaskController.addTask(title, category, dueDate);
+                },
+              );
+            },
+          );
+        },
       ),
     );
   }
