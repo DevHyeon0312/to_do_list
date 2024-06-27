@@ -17,6 +17,9 @@
   <img src="https://github.com/DevHyeon0312/to_do_list/assets/72678200/85c46d7c-1966-4792-b34c-4a5e902130e6" width="200">
   <img src="https://github.com/DevHyeon0312/to_do_list/assets/72678200/9bcb3960-1e5b-4c37-9366-ed06d33f131f" width="200">
 
+### apk 직접 다운로드
+- [apk-download](https://drive.google.com/file/d/1gWaK3jijW6IEGnR7Z57O0Elcmntucd0E/view?usp=sharing)
+
 #### Show VS-Code Interface
 - [VS-Code Interface](https://github1s.com/DevHyeon0312/to_do_list)
 
