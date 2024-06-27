@@ -6,8 +6,9 @@ import 'package:to_do_list/app/data/model/task.dart';
 import 'package:to_do_list/app/data/usecase/task_usecase.dart';
 
 class TaskController extends GetxController {
-  // UseCase
-  final TaskUseCase taskUseCase = TaskUseCase();
+  final TaskUseCase taskUseCase;
+
+  TaskController({required this.taskUseCase});
 
   final pendingTaskList = <Task>[].obs;
   final ongoingTaskList = <Task>[].obs;

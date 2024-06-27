@@ -4,7 +4,7 @@ import 'package:to_do_list/common/util/platform_util.dart';
 // ignore_for_file: avoid_print
 
 class DebugLog {
-  static const packageName = 'flutter_template';
+  static const packageName = 'to_do_list';
   static const isShowAllStackTrace = false;
   static void _iosLog(
     String message, {

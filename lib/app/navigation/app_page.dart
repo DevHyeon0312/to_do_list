@@ -21,8 +21,10 @@ class AppPage {
     ),
   ];
 
+  static bool Function() isAndroid = PlatformUtil.isAndroid;
+
   static Transition? _getTransition() {
-    if (PlatformUtil.isAndroid()) {
+    if (isAndroid()) {
       return Transition.rightToLeft;
     } else {
       return null;
@@ -30,7 +32,7 @@ class AppPage {
   }
 
   static Duration? _getTransitionDuration() {
-    if (PlatformUtil.isAndroid()) {
+    if (isAndroid()) {
       return const Duration(milliseconds: 200);
     } else {
       return null;

@@ -5,8 +5,9 @@ import 'package:to_do_list/core/local_db/repository/database_task_repository.dar
 
 class TaskUseCase {
   // Task DataBase Repository
-  final Future<DatabaseTaskRepository> taskRepository =
-      DatabaseModule().getDatabaseTaskRepository();
+  final Future<DatabaseTaskRepository> taskRepository;
+
+  TaskUseCase({required this.taskRepository});
 
   // 전체 할일 조회
   Future<List<Task>> getAllTasks() async {
