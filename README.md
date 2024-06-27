@@ -1,4 +1,4 @@
-### flutter_template
+### To-Do App
 
 ### 목표
 - 테스크 카드를 생성, 수정, 삭제할 수 있는 기능 : Item 을 클릭하여 detail page 에서 처리
@@ -13,7 +13,9 @@
 - 코드의 재사용성과 효율성을 고려하여 프로젝트를 구성 -> MVVM 패턴을 적용 , Clean Architecture 개념 적용 (구조는 정확히 일치하지 않음) , common widget 을 통한 재사용성 증가
 
 ### 미리보기
-- 
+- ![생성](https://github.com/DevHyeon0312/to_do_list/assets/72678200/9b437f44-6223-482b-bad2-4e94b5036938)
+- ![수정](https://github.com/DevHyeon0312/to_do_list/assets/72678200/31b0eb3a-7ac2-45b5-a7c7-1cf2a70204b8)
+- ![유지](https://github.com/DevHyeon0312/to_do_list/assets/72678200/6ece7e6e-8a64-470b-84db-6e9ced2c6f08)
 
 #### Show VS-Code Interface
 - [VS-Code Interface](https://github1s.com/DevHyeon0312/to_do_list)
