@@ -73,7 +73,7 @@ class _AnimationFloatingActionButtonState
               height: (widget.size.height - 20),
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.blueAccent,
+                // color: Colors.blueAccent,
               ),
               child: const Icon(Icons.add, color: Colors.white),
             ),

@@ -28,7 +28,7 @@ class TaskController extends GetxController {
       case TaskStatus.ongoing:
         return _getOngoingTaskList();
       case TaskStatus.completed:
-        return _getCopmletedTaskList();
+        return _getCompleteTaskList();
       default:
         throw Exception('올바르지 않은 상태입니다.');
     }
@@ -50,48 +50,110 @@ class TaskController extends GetxController {
     });
   }
 
+  Future<Task> updateTask(TaskStatus? oldTaskStatus, Task task) async {
+    return await taskUseCase.updateTask(task).then((_) {
+      if (oldTaskStatus == task.status) {
+        switch (oldTaskStatus) {
+          case TaskStatus.pending:
+            var index =
+                pendingTaskList.indexWhere((element) => element.id == task.id);
+            pendingTaskList[index] = task;
+            break;
+          case TaskStatus.ongoing:
+            var index =
+                ongoingTaskList.indexWhere((element) => element.id == task.id);
+            ongoingTaskList[index] = task;
+            break;
+          case TaskStatus.completed:
+            var index = completedTaskList
+                .indexWhere((element) => element.id == task.id);
+            completedTaskList[index] = task;
+            break;
+          default:
+            throw Exception('올바르지 않은 상태입니다.');
+        }
+      } else {
+        switch (oldTaskStatus) {
+          case TaskStatus.pending:
+            pendingTaskList.removeWhere((element) => element.id == task.id);
+            break;
+          case TaskStatus.ongoing:
+            ongoingTaskList.removeWhere((element) => element.id == task.id);
+            break;
+          case TaskStatus.completed:
+            completedTaskList.removeWhere((element) => element.id == task.id);
+            break;
+          default:
+            throw Exception('올바르지 않은 상태입니다.');
+        }
+        switch (task.status) {
+          case TaskStatus.pending:
+            pendingTaskList.add(task);
+            break;
+          case TaskStatus.ongoing:
+            ongoingTaskList.add(task);
+            break;
+          case TaskStatus.completed:
+            completedTaskList.add(task);
+            break;
+          default:
+            throw Exception('올바르지 않은 상태입니다.');
+        }
+      }
+      return task;
+    }).catchError((error) {
+      throw Exception('할일 수정에 실패했습니다.');
+    });
+  }
+
   Future<void> updateTaskStatus(Task task, TaskStatus newTaskStatus) async {
     TaskStatus oldTaskStatus = task.status;
     task.status = newTaskStatus;
     task.sortId = DateTime.now().millisecondsSinceEpoch;
     return taskUseCase.updateTask(task).then((value) {
       // pending -> ongoing
-      if (oldTaskStatus == TaskStatus.pending && newTaskStatus == TaskStatus.ongoing) {
+      if (oldTaskStatus == TaskStatus.pending &&
+          newTaskStatus == TaskStatus.ongoing) {
         // 1. pendingTaskList 에서 해당 task 를 제거
         // 2. ongoingTaskList 에 해당 task 를 추가
         pendingTaskList.removeWhere((element) => element.id == task.id);
         ongoingTaskList.add(task);
       }
       // pending -> completed
-      else if (oldTaskStatus == TaskStatus.pending && newTaskStatus == TaskStatus.completed) {
+      else if (oldTaskStatus == TaskStatus.pending &&
+          newTaskStatus == TaskStatus.completed) {
         // 1. pendingTaskList 에서 해당 task 를 제거
         // 2. completedTaskList 에 해당 task 를 추가
         pendingTaskList.removeWhere((element) => element.id == task.id);
         completedTaskList.add(task);
       }
       // ongoing -> pending
-      else if (oldTaskStatus == TaskStatus.ongoing && newTaskStatus == TaskStatus.pending) {
+      else if (oldTaskStatus == TaskStatus.ongoing &&
+          newTaskStatus == TaskStatus.pending) {
         // 1. ongoingTaskList 에서 해당 task 를 제거
         // 2. pendingTaskList 에 해당 task 를 추가
         ongoingTaskList.removeWhere((element) => element.id == task.id);
         pendingTaskList.add(task);
       }
       // ongoing -> completed
-      else if (oldTaskStatus == TaskStatus.ongoing && newTaskStatus == TaskStatus.completed) {
+      else if (oldTaskStatus == TaskStatus.ongoing &&
+          newTaskStatus == TaskStatus.completed) {
         // 1. ongoingTaskList 에서 해당 task 를 제거
         // 2. completedTaskList 에 해당 task 를 추가
         ongoingTaskList.removeWhere((element) => element.id == task.id);
         completedTaskList.add(task);
       }
       // completed -> pending
-      else if (oldTaskStatus == TaskStatus.completed && newTaskStatus == TaskStatus.pending) {
+      else if (oldTaskStatus == TaskStatus.completed &&
+          newTaskStatus == TaskStatus.pending) {
         // 1. completedTaskList 에서 해당 task 를 제거
         // 2. pendingTaskList 에 해당 task 를 추가
         completedTaskList.removeWhere((element) => element.id == task.id);
         pendingTaskList.add(task);
       }
       // completed -> ongoing
-      else if (oldTaskStatus == TaskStatus.completed && newTaskStatus == TaskStatus.ongoing) {
+      else if (oldTaskStatus == TaskStatus.completed &&
+          newTaskStatus == TaskStatus.ongoing) {
         // 1. completedTaskList 에서 해당 task 를 제거
         // 2. ongoingTaskList 에 해당 task 를 추가
         completedTaskList.removeWhere((element) => element.id == task.id);
@@ -104,7 +166,8 @@ class TaskController extends GetxController {
     });
   }
 
-  Future<void> changeTaskPosition(List<Task> taskList, int oldIndex, int newIndex) async {
+  Future<void> changeTaskPosition(
+      List<Task> taskList, int oldIndex, int newIndex) async {
     if (newIndex > oldIndex) {
       newIndex -= 1;
     }
@@ -112,10 +175,13 @@ class TaskController extends GetxController {
     final Task item = taskList[oldIndex];
     item.sortId = _getNewSortId(taskList, oldIndex, newIndex);
 
-    return await taskUseCase.updateTask(item).then((value) {
-      taskList.removeAt(oldIndex);
-      taskList.insert(newIndex, item);
-    }).catchError((error) {
+    var tempList = List<Task>.from(taskList);
+    taskList.removeAt(oldIndex);
+    taskList.insert(newIndex, item);
+
+    return await taskUseCase.updateTask(item).catchError((error) {
+      taskList.clear();
+      taskList.addAll(tempList);
       throw Exception('할일 순서 변경에 실패했습니다.');
     });
   }
@@ -138,7 +204,7 @@ class TaskController extends GetxController {
     });
   }
 
-  Future<void> _getCopmletedTaskList() async {
+  Future<void> _getCompleteTaskList() async {
     completedTaskList.clear();
     return await taskUseCase.getCompletedTaskList().then((value) {
       completedTaskList.addAll(value);

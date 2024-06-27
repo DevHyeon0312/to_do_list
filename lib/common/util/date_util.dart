@@ -14,4 +14,10 @@ class DateUtil {
     return DateTime.fromMillisecondsSinceEpoch(milliSeconds);
   }
 
+  static String getFormattedDate(DateTime? dateTime) {
+    if (dateTime == null) {
+      return '없음';
+    }
+    return '${dateTime.year}년 ${dateTime.month}월 ${dateTime.day}일';
+  }
 }

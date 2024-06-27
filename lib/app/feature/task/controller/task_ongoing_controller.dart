@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:to_do_list/app/data/enum/task_status.dart';
 import 'package:to_do_list/app/data/model/task.dart';
 import 'package:to_do_list/app/feature/task/controller/task_controller.dart';
+import 'package:to_do_list/common/util/debug_log.dart';
 
 class TaskOngoingController extends GetxController {
   final TaskController _taskController = Get.find<TaskController>();
@@ -19,7 +20,7 @@ class TaskOngoingController extends GetxController {
   void fetchTasks() async {
     isLoading.value = true;
     await _taskController.getTaskList(TaskStatus.ongoing).catchError((error) {
-      print('진행중인 일 조회에 실패했습니다.');
+      DebugLog.e('진행중인 할일 조회에 실패했습니다.', error: error);
     }).whenComplete(() {
       isLoading.value = false;
     });
@@ -30,7 +31,7 @@ class TaskOngoingController extends GetxController {
     await _taskController
         .insertTask(ongoingTaskList, task, position)
         .catchError((error) {
-      print('진행중인 일 등록에 실패했습니다.');
+      DebugLog.e('진행중인 할일 등록에 실패했습니다.', error: error);
     }).whenComplete(() {
       isLoading.value = false;
     });
@@ -41,7 +42,7 @@ class TaskOngoingController extends GetxController {
     await _taskController
         .updateTaskStatus(task, TaskStatus.completed)
         .catchError((error) {
-      print('진행중인 일 완료에 실패했습니다.');
+      DebugLog.e('진행중인 일 완료에 실패했습니다.', error: error);
     }).whenComplete(() {
       isLoading.value = false;
     });
@@ -50,7 +51,7 @@ class TaskOngoingController extends GetxController {
   void deleteTask(Task task) async {
     isLoading.value = true;
     await _taskController.deleteTask(ongoingTaskList, task).catchError((error) {
-      print('진행중인 일 삭제에 실패했습니다.');
+      DebugLog.e('진행중인 할일 삭제에 실패했습니다.', error: error);
     }).whenComplete(() {
       isLoading.value = false;
     });
@@ -58,8 +59,10 @@ class TaskOngoingController extends GetxController {
 
   void changeTaskPosition(int oldIndex, int newIndex) async {
     isLoading.value = true;
-    await _taskController.changeTaskPosition(ongoingTaskList, oldIndex, newIndex).catchError((error) {
-      print('진행중인 일 순서 변경에 실패했습니다.');
+    await _taskController
+        .changeTaskPosition(ongoingTaskList, oldIndex, newIndex)
+        .catchError((error) {
+      DebugLog.e('진행중인 할일 순서 변경에 실패했습니다.', error: error);
     }).whenComplete(() {
       isLoading.value = false;
     });

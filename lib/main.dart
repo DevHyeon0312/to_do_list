@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
         useMaterial3: true,
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.white,
@@ -31,6 +31,11 @@ class MyApp extends StatelessWidget {
           backgroundColor: Colors.white,
           selectedItemColor: Colors.blueAccent,
           unselectedItemColor: Colors.grey,
+        ),
+        cardTheme: const CardTheme(
+          color: Colors.white,
+          shadowColor: Colors.grey,
+          margin: EdgeInsets.all(8),
         ),
       ),
       initialRoute: AppRoute.main.name,

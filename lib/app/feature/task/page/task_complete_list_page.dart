@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do_list/app/feature/task/controller/task_complete_controller.dart';
+import 'package:to_do_list/app/feature/task/widget/task_card.dart';
+import 'package:to_do_list/app/navigation/app_route.dart';
 
 class TaskCompleteListPage extends StatefulWidget {
   const TaskCompleteListPage({super.key});
@@ -11,7 +13,7 @@ class TaskCompleteListPage extends StatefulWidget {
 
 class _TaskCompleteListPageState extends State<TaskCompleteListPage> {
   final completeTaskController = Get.put(TaskCompleteController());
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,6 +23,33 @@ class _TaskCompleteListPageState extends State<TaskCompleteListPage> {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
+          // list widget
+          Obx(() {
+            final completeTaskList = completeTaskController.completedTaskList;
+            return ReorderableListView.builder(
+              onReorder: (int oldIndex, int newIndex) {
+                completeTaskController.changeTaskPosition(oldIndex, newIndex);
+              },
+              itemCount: completeTaskList.length,
+              itemBuilder: (context, index) {
+                final item = completeTaskList[index];
+                return TaskCard(
+                  key: ValueKey(item.id),
+                  position: index,
+                  task: item,
+                  onStart: () {},
+                  onCompleted: () {},
+                  onDelete: () {
+                    completeTaskController.deleteTask(item);
+                  },
+                  onTap: () {
+                    Get.toNamed(AppRoute.taskDetail.name, arguments: item);
+                  },
+                );
+              },
+              buildDefaultDragHandles: false,
+            );
+          }),
           // loading widget
           Obx(() {
             var loading = completeTaskController.isLoading;
@@ -31,30 +60,6 @@ class _TaskCompleteListPageState extends State<TaskCompleteListPage> {
             } else {
               return const SizedBox.shrink();
             }
-          }),
-          // list widget
-          Obx(() {
-            final pendingTaskList = completeTaskController.completedTaskList;
-            return ReorderableListView.builder(
-              onReorder: (int oldIndex, int newIndex) {
-                completeTaskController.changeTaskPosition(oldIndex, newIndex);
-              },
-              itemCount: pendingTaskList.length,
-              itemBuilder: (context, index) {
-                final item = pendingTaskList[index];
-                return ListTile(
-                  key: ValueKey(item.id),
-                  title: Text(item.title),
-                  subtitle: Text(
-                    '할일: ${item.title}\n'
-                        '카테고리: ${item.category}\n'
-                        'sortId: ${item.sortId}\n'
-                        '마감일: ${item.dueDate}',
-                  ),
-                  onTap: () {},
-                );
-              },
-            );
           }),
         ],
       ),
