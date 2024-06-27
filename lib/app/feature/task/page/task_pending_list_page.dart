@@ -22,7 +22,7 @@ class _TaskPendingPageState extends State<TaskPendingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('완료'),
+        title: const Text('할일'),
       ),
       backgroundColor: Colors.white,
       body: Stack(
