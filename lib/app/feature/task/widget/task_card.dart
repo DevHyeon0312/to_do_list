@@ -54,6 +54,7 @@ class _TaskCardState extends State<TaskCard>
   }
 
   void _toggleActions() {
+    print('toggleActions');
     setState(() {
       _showActions = !_showActions;
       if (_showActions) {
@@ -88,47 +89,50 @@ class _TaskCardState extends State<TaskCard>
                   onLongPress: _toggleActions,
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 300),
-                    padding: const EdgeInsets.all(16.0),
+                    margin: const EdgeInsets.all(16.0),
                     transform:
                     Matrix4.translationValues(_showActions ? -10 : 0, 0, 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.task.title,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4.0),
-                          child: Text(
-                            widget.task.content.isNotEmpty ? widget.task.content : '내용 없음',
+                    child: Container(
+                      color: Colors.transparent,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.task.title,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
-                              color: Colors.black54,
-                              fontSize: 14.0,
+                              color: Colors.black,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ),
-                        if (widget.task.dueDate != null)
                           Padding(
-                            padding: const EdgeInsets.only(top: 2.0),
+                            padding: const EdgeInsets.only(top: 4.0),
                             child: Text(
-                              '마감일: ${DateUtil.getFormattedDate(widget.task.dueDate)}',
+                              widget.task.content.isNotEmpty ? widget.task.content : '내용 없음',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
-                                color: Colors.red,
-                                fontSize: 10.0,
+                                color: Colors.black54,
+                                fontSize: 14.0,
                               ),
                             ),
                           ),
-                      ],
-                    ),
+                          if (widget.task.dueDate != null)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 2.0),
+                              child: Text(
+                                '마감일: ${DateUtil.getFormattedDate(widget.task.dueDate)}',
+                                style: const TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 10.0,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    )
                   ),
                 ),
               ),
