@@ -13,9 +13,9 @@
 - 코드의 재사용성과 효율성을 고려하여 프로젝트를 구성 -> MVVM 패턴을 적용 , Clean Architecture 개념 적용 (구조는 정확히 일치하지 않음) , common widget 을 통한 재사용성 증가
 
 ### 미리보기
-- ![생성](https://github.com/DevHyeon0312/to_do_list/assets/72678200/9b437f44-6223-482b-bad2-4e94b5036938)
-- ![수정](https://github.com/DevHyeon0312/to_do_list/assets/72678200/31b0eb3a-7ac2-45b5-a7c7-1cf2a70204b8)
-- ![유지](https://github.com/DevHyeon0312/to_do_list/assets/72678200/6ece7e6e-8a64-470b-84db-6e9ced2c6f08)
+  <img src="https://github.com/DevHyeon0312/to_do_list/assets/72678200/f72f1c03-017c-4351-94b8-28f3d23b24a4" width="300">
+  <img src="https://github.com/DevHyeon0312/to_do_list/assets/72678200/85c46d7c-1966-4792-b34c-4a5e902130e6" width="300">
+  <img src="https://github.com/DevHyeon0312/to_do_list/assets/72678200/9bcb3960-1e5b-4c37-9366-ed06d33f131f" width="300">
 
 #### Show VS-Code Interface
 - [VS-Code Interface](https://github1s.com/DevHyeon0312/to_do_list)
